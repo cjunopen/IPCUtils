@@ -55,6 +55,7 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
     }
 
     @Override
+    @WorkerThread
     public String request(String req) {
         if (getIRemoteService() == null) {
             return null;
@@ -138,7 +139,6 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
      * 启动大屏报钟业务
      */
     @Override
-    @WorkerThread
     public boolean launchAlarmBusiness(){
         IpcBaseRequest baseRequest = new IpcBaseRequest()
                 .setCmdId(CmdIdConstant.CMD_LAUNCH_ALARM_BUSINESS);

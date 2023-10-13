@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ThreadUtils;
 import com.github.cjunopen.ipc_library.interfaces.IKSongForLiyuHome;
 import com.github.cjunopen.ipc_library.interfaces.ILiyuHomeForKSong;
 import com.github.cjunopen.ipc_library.ksong.req.WalkLanternReq;
@@ -48,7 +49,13 @@ public class IpcApp extends Application {
         LiyuHomeIPCManager.getInstance().setIKSongForLiyuHome(new IKSongForLiyuHome() {
             @Override
             public void sendWalkLantern(WalkLanternReq req) {
-                showToast(GsonUtil.toJson(req));
+                //K歌app处理 WalkLanternReq 展示走马灯
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(GsonUtil.toJson(req));
+                    }
+                });
             }
         });
     }
