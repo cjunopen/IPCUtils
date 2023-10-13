@@ -4,12 +4,12 @@ import com.codezjx.andlinker.annotation.Callback;
 import com.codezjx.andlinker.annotation.RemoteInterface;
 
 /**
- * @Description:
+ * @Description: 利瑜桌面的ipc通信接口
  * @Author: CJ
  * @CreateDate: 2023/10/13 9:25
  */
 @RemoteInterface
-public interface ILiYuHome {
+public interface ILiYuHomeIpcConnect {
 
     String request(String req);
 

@@ -2,16 +2,20 @@ package com.github.cjunopen.ipc_library.manager;
 
 import android.content.Context;
 
+import androidx.annotation.WorkerThread;
+
 import com.blankj.utilcode.util.Utils;
 import com.github.cjunopen.ipc_library.constant.CmdIdConstant;
 import com.github.cjunopen.ipc_library.interfaces.IAndlinkerRemoteCallback;
-import com.github.cjunopen.ipc_library.interfaces.ILiYuHome;
+import com.github.cjunopen.ipc_library.interfaces.IKSongForLiyuHome;
+import com.github.cjunopen.ipc_library.interfaces.ILiyuHomeForKSong;
+import com.github.cjunopen.ipc_library.interfaces.ILiYuHomeIpcConnect;
+import com.github.cjunopen.ipc_library.ksong.req.WalkLanternReq;
 import com.github.cjunopen.ipc_library.req.IpcBaseRequest;
 import com.github.cjunopen.ipc_library.req.IpcTestReq;
+import com.github.cjunopen.ipc_library.resp.IpcBaseResponse;
 import com.github.cjunopen.ipc_library.resp.IpcTestResp;
 import com.github.cjunopen.ipc_library.util.GsonUtil;
-
-import java.lang.reflect.Type;
 
 import io.reactivex.rxjava3.core.Observable;
 import timber.log.Timber;
@@ -21,7 +25,9 @@ import timber.log.Timber;
  * @Author: CJ
  * @CreateDate: 2023/10/13 9:25
  */
-public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHome> implements ILiYuHome{
+public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> implements ILiYuHomeIpcConnect, ILiyuHomeForKSong {
+
+    private IKSongForLiyuHome mIKSongForLiyuHome;
 
     private IAndlinkerRemoteCallback mIAndlinkerRemoteCallback;
 
@@ -75,6 +81,11 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHome> implements ILi
         getIRemoteService().unRegisterLiyuHomeListener();
     }
 
+    /**
+     * rxjava方式调用
+     * @param req
+     * @return
+     */
     public Observable<IpcTestResp> testReq(IpcTestReq req){
         return IpcConnectByRx(new IpcWorkAble<IpcTestResp>() {
             @Override
@@ -86,4 +97,60 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHome> implements ILi
             }
         });
     }
+
+    /**
+     * 设置 K歌 提供给利瑜桌面的接口
+     * @param IKSongForLiyuHome
+     */
+    public void setIKSongForLiyuHome(IKSongForLiyuHome IKSongForLiyuHome) {
+        mIKSongForLiyuHome = IKSongForLiyuHome;
+        bind();
+        setOnBindListener(new OnBindListener() {
+            @Override
+            public void onBind() {
+                registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
+                    @Override
+                    public void onCallBack(String str) {
+                        handleCallBack(str, IKSongForLiyuHome);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 处理利瑜桌面发来的数据
+     */
+    private void handleCallBack(String json, IKSongForLiyuHome IKSongForLiyuHome){
+        if (IKSongForLiyuHome == null) {
+            return;
+        }
+        IpcBaseRequest base = GsonUtil.fromJson(json, IpcBaseRequest.class);
+        switch (base.getCmdId()){
+            case CmdIdConstant.CMD_SEND_WALK_LANTERN:
+                WalkLanternReq walkLanternReq = GsonUtil.fromJson(base.getData().toString(), WalkLanternReq.class);
+                IKSongForLiyuHome.sendWalkLantern(walkLanternReq);
+                break;
+        }
+    }
+
+    /**
+     * 启动大屏报钟业务
+     */
+    @Override
+    @WorkerThread
+    public boolean launchAlarmBusiness(){
+        IpcBaseRequest baseRequest = new IpcBaseRequest()
+                .setCmdId(CmdIdConstant.CMD_LAUNCH_ALARM_BUSINESS);
+
+        String json = request(GsonUtil.toJson(baseRequest));
+
+        IpcBaseResponse response = getIpcBaseResponse(json);
+        return response.getCode() == 0;
+    }
+
+    private IpcBaseResponse getIpcBaseResponse(String json){
+        return GsonUtil.fromJson(json, IpcBaseResponse.class);
+    }
+
 }

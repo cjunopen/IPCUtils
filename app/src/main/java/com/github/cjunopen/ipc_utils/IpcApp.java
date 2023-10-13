@@ -4,12 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.ThreadUtils;
-import com.github.cjunopen.ipc_library.interfaces.IAndlinkerRemoteCallback;
-import com.github.cjunopen.ipc_library.manager.BaseIPCManager;
+import com.github.cjunopen.ipc_library.interfaces.IKSongForLiyuHome;
+import com.github.cjunopen.ipc_library.interfaces.ILiyuHomeForKSong;
+import com.github.cjunopen.ipc_library.ksong.req.WalkLanternReq;
 import com.github.cjunopen.ipc_library.manager.LiyuHomeIPCManager;
-import com.github.cjunopen.ipc_library.resp.IpcBaseResponse;
 import com.github.cjunopen.ipc_library.util.GsonUtil;
+import com.google.gson.Gson;
 
 /**
  * @Description:
@@ -26,26 +26,31 @@ public class IpcApp extends Application {
 
         sContext = this;
 
-        LiyuHomeIPCManager.getInstance().bind();
+//        LiyuHomeIPCManager.getInstance().bind();
+//
+//        LiyuHomeIPCManager.getInstance().setOnBindListener(new BaseIPCManager.OnBindListener() {
+//            @Override
+//            public void onBind() {
+//                LiyuHomeIPCManager.getInstance().registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
+//                    @Override
+//                    public void onCallBack(String str) {
+//                        ThreadUtils.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                showToast("onCallBack: " + str);
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
 
-        LiyuHomeIPCManager.getInstance().setOnBindListener(new BaseIPCManager.OnBindListener() {
+        LiyuHomeIPCManager.getInstance().setIKSongForLiyuHome(new IKSongForLiyuHome() {
             @Override
-            public void onBind() {
-                LiyuHomeIPCManager.getInstance().registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
-                    @Override
-                    public void onCallBack(String str) {
-                        ThreadUtils.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast("onCallBack: " + str);
-                            }
-                        });
-                    }
-                });
+            public void sendWalkLantern(WalkLanternReq req) {
+                showToast(GsonUtil.toJson(req));
             }
         });
-
-
     }
 
     public static void showToast(String msg){
