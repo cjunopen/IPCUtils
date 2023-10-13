@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ThreadUtils;
 import com.github.cjunopen.ipc_library.interfaces.IAndlinkerRemoteCallback;
 import com.github.cjunopen.ipc_library.manager.BaseIPCManager;
 import com.github.cjunopen.ipc_library.manager.LiyuHomeIPCManager;
@@ -33,7 +34,12 @@ public class IpcApp extends Application {
                 LiyuHomeIPCManager.getInstance().registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
                     @Override
                     public void onCallBack(String str) {
-                        showToast("onCallBack: " + str);
+                        ThreadUtils.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast("onCallBack: " + str);
+                            }
+                        });
                     }
                 });
             }
