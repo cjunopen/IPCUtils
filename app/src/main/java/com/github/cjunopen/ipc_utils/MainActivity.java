@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 IpcApp.showToast("onClick1: " + json);
 
                 IpcBaseResponse<IpcTestResp> resp =
-                        GsonUtil.fromJson(json, GsonUtils.getType(IpcBaseResponse.class, IpcBaseResponse.class));
+                        GsonUtil.fromJson(json, GsonUtils.getType(IpcBaseResponse.class, IpcTestResp.class));
             }
         });
 
