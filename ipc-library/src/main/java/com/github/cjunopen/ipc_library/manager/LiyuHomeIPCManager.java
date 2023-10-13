@@ -3,8 +3,10 @@ package com.github.cjunopen.ipc_library.manager;
 import android.content.Context;
 
 import com.blankj.utilcode.util.Utils;
+import com.github.cjunopen.ipc_library.constant.CmdIdConstant;
 import com.github.cjunopen.ipc_library.interfaces.IAndlinkerRemoteCallback;
 import com.github.cjunopen.ipc_library.interfaces.ILiYuHome;
+import com.github.cjunopen.ipc_library.req.IpcBaseRequest;
 import com.github.cjunopen.ipc_library.req.IpcTestReq;
 import com.github.cjunopen.ipc_library.resp.IpcTestResp;
 import com.github.cjunopen.ipc_library.util.GsonUtil;
@@ -77,7 +79,10 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHome> implements ILi
         return IpcConnectByRx(new IpcWorkAble<IpcTestResp>() {
             @Override
             public String request() {
-                return LiyuHomeIPCManager.this.request(GsonUtil.toJson(req));
+                IpcBaseRequest<IpcTestReq> baseRequest = new IpcBaseRequest<>();
+                baseRequest.setCmdId(CmdIdConstant.CMD_TEST_REQ);
+                baseRequest.setData(req);
+                return LiyuHomeIPCManager.this.request(GsonUtil.toJson(baseRequest));
             }
         });
     }

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 IpcBaseRequest<IpcTestReq> request = new IpcBaseRequest<>();
                 request.setCmdId(CmdIdConstant.CMD_TEST_REQ);
                 request.setData(new IpcTestReq());
+
                 String json = LiyuHomeIPCManager.getInstance().request(GsonUtil.toJson(request));
                 IpcApp.showToast("onClick1: " + json);
 
