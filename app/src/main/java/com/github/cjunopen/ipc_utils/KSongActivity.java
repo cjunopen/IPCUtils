@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.github.cjunopen.ipc_library.interfaces.ILiyuHomeForKSong;
 import com.github.cjunopen.ipc_library.manager.LiyuHomeIPCManager;
 
@@ -32,6 +33,13 @@ public class KSongActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mILiyuHomeForKSong.launchLiyuHome();
+            }
+        });
+
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.startActivity(MainActivity.class);
             }
         });
     }
