@@ -11,4 +11,7 @@ public interface ILiyuHomeForKSong {
 
     //启动大屏报钟模块
     boolean launchAlarmBusiness();
+
+    //启动利瑜桌面
+    boolean launchLiyuHome();
 }

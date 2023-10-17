@@ -27,5 +27,12 @@ public class KSongActivity extends AppCompatActivity {
                 mILiyuHomeForKSong.launchAlarmBusiness();
             }
         });
+
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mILiyuHomeForKSong.launchLiyuHome();
+            }
+        });
     }
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.WorkerThread;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.Utils;
 import com.github.cjunopen.ipc_library.constant.CmdIdConstant;
 import com.github.cjunopen.ipc_library.interfaces.IAndlinkerRemoteCallback;
@@ -147,6 +149,12 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
 
         IpcBaseResponse response = getIpcBaseResponse(json);
         return response.getCode() == 0;
+    }
+
+    @Override
+    public boolean launchLiyuHome() {
+        AppUtils.launchApp("com.evideo.projector.home");
+        return true;
     }
 
     private IpcBaseResponse getIpcBaseResponse(String json){

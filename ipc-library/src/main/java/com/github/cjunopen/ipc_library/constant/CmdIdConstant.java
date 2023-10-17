@@ -15,4 +15,6 @@ public class CmdIdConstant {
     public static final String CMD_SEND_WALK_LANTERN = "CMD_SEND_WALK_LANTERN";
 
     public static final String CMD_LAUNCH_ALARM_BUSINESS = "CMD_LAUNCH_ALARM_BUSINESS";
+
+    public static final String CMD_LAUNCH_ACTIVITY = "CMD_LAUNCH_ACTIVITY";
 }

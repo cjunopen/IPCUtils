@@ -27,6 +27,19 @@ public class IpcApp extends Application {
 
         sContext = this;
 
+        LiyuHomeIPCManager.getInstance().setIKSongForLiyuHome(new IKSongForLiyuHome() {
+            @Override
+            public void sendWalkLantern(WalkLanternReq req) {
+                //K歌app处理 WalkLanternReq 展示走马灯
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(GsonUtil.toJson(req));
+                    }
+                });
+            }
+        });
+
 //        LiyuHomeIPCManager.getInstance().bind();
 //
 //        LiyuHomeIPCManager.getInstance().setOnBindListener(new BaseIPCManager.OnBindListener() {
@@ -45,19 +58,6 @@ public class IpcApp extends Application {
 //                });
 //            }
 //        });
-
-        LiyuHomeIPCManager.getInstance().setIKSongForLiyuHome(new IKSongForLiyuHome() {
-            @Override
-            public void sendWalkLantern(WalkLanternReq req) {
-                //K歌app处理 WalkLanternReq 展示走马灯
-                ThreadUtils.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(GsonUtil.toJson(req));
-                    }
-                });
-            }
-        });
     }
 
     public static void showToast(String msg){
