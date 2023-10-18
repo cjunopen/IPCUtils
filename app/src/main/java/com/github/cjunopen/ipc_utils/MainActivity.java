@@ -51,32 +51,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LiyuHomeIPCManager.getInstance().testReq(new IpcTestReq())
-                        .subscribe(new Observer<IpcTestResp>() {
-                            @Override
-                            public void onSubscribe(@NonNull Disposable d) {
 
-                            }
-
-                            @Override
-                            public void onNext(@NonNull IpcTestResp ipcTestResp) {
-                                IpcApp.showToast("onNext: " + GsonUtil.toJson(ipcTestResp));
-                            }
-
-                            @Override
-                            public void onError(@NonNull Throwable e) {
-                                IpcApp.showToast("onError: " + e.getMessage());
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-            }
-        });
     }
 }

@@ -1,25 +1,20 @@
 package com.github.cjunopen.ipc_library.manager;
 
 import android.content.Context;
+import android.text.TextUtils;
 
-import androidx.annotation.WorkerThread;
-
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.Utils;
 import com.github.cjunopen.ipc_library.constant.CmdIdConstant;
 import com.github.cjunopen.ipc_library.interfaces.IAndlinkerRemoteCallback;
 import com.github.cjunopen.ipc_library.interfaces.IKSongForLiyuHome;
-import com.github.cjunopen.ipc_library.interfaces.ILiyuHomeForKSong;
 import com.github.cjunopen.ipc_library.interfaces.ILiYuHomeIpcConnect;
+import com.github.cjunopen.ipc_library.interfaces.ILiyuHomeForKSong;
 import com.github.cjunopen.ipc_library.ksong.req.WalkLanternReq;
 import com.github.cjunopen.ipc_library.req.IpcBaseRequest;
-import com.github.cjunopen.ipc_library.req.IpcTestReq;
 import com.github.cjunopen.ipc_library.resp.IpcBaseResponse;
-import com.github.cjunopen.ipc_library.resp.IpcTestResp;
 import com.github.cjunopen.ipc_library.util.GsonUtil;
 
-import io.reactivex.rxjava3.core.Observable;
 import timber.log.Timber;
 
 /**
@@ -57,7 +52,6 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
     }
 
     @Override
-    @WorkerThread
     public String request(String req) {
         if (getIRemoteService() == null) {
             return null;
@@ -82,23 +76,6 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
         }
         getLinker().unRegisterObject(mIAndlinkerRemoteCallback);
         getIRemoteService().unRegisterLiyuHomeListener();
-    }
-
-    /**
-     * rxjava方式调用
-     * @param req
-     * @return
-     */
-    public Observable<IpcTestResp> testReq(IpcTestReq req){
-        return IpcConnectByRx(new IpcWorkAble<IpcTestResp>() {
-            @Override
-            public String request() {
-                IpcBaseRequest<IpcTestReq> baseRequest = new IpcBaseRequest<>();
-                baseRequest.setCmdId(CmdIdConstant.CMD_TEST_REQ);
-                baseRequest.setData(req);
-                return LiyuHomeIPCManager.this.request(GsonUtil.toJson(baseRequest));
-            }
-        });
     }
 
     /**
@@ -146,6 +123,9 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
                 .setCmdId(CmdIdConstant.CMD_LAUNCH_ALARM_BUSINESS);
 
         String json = request(GsonUtil.toJson(baseRequest));
+        if (TextUtils.isEmpty(json)) {
+            return false;
+        }
 
         IpcBaseResponse response = getIpcBaseResponse(json);
         return response.getCode() == 0;
