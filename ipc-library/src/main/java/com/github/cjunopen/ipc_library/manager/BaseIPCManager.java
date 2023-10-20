@@ -124,7 +124,7 @@ public abstract class BaseIPCManager<T> {
                     }
                 }
             }
-        });
+        }).start();
     }
 
     public AndLinker getLinker() {
