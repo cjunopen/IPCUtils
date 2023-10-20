@@ -90,17 +90,19 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
     @Override
     public void bind() {
         super.bind();
-        setOnBindListener(new OnBindListener() {
-            @Override
-            public void onBind() {
-                registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
-                    @Override
-                    public void onCallBack(String str) {
-                        handleCallBack(str, mIKSongForLiyuHome);
-                    }
-                });
-            }
-        });
+        if (mIKSongForLiyuHome != null) {
+            setOnBindListener(new OnBindListener() {
+                @Override
+                public void onBind() {
+                    registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
+                        @Override
+                        public void onCallBack(String str) {
+                            handleCallBack(str, mIKSongForLiyuHome);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     /**
