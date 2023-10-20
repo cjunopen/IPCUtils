@@ -85,13 +85,18 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
     public void setIKSongForLiyuHome(IKSongForLiyuHome IKSongForLiyuHome) {
         mIKSongForLiyuHome = IKSongForLiyuHome;
         bind();
+    }
+
+    @Override
+    public void bind() {
+        super.bind();
         setOnBindListener(new OnBindListener() {
             @Override
             public void onBind() {
                 registerLiyuHomeListener(new IAndlinkerRemoteCallback() {
                     @Override
                     public void onCallBack(String str) {
-                        handleCallBack(str, IKSongForLiyuHome);
+                        handleCallBack(str, mIKSongForLiyuHome);
                     }
                 });
             }

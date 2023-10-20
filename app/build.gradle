@@ -36,8 +36,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-//    implementation project(path: ":ipc-library")
-    implementation 'com.github.cjunopen:IPCUtils:V1.0.0-11a9374be7-1'
+    implementation project(path: ":ipc-library")
+//    implementation 'com.github.cjunopen:IPCUtils:11a9374be7'
 
     //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
