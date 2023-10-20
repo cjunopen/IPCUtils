@@ -74,8 +74,16 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
         if (getIRemoteService() == null) {
             return;
         }
-        getLinker().unRegisterObject(mIAndlinkerRemoteCallback);
+        if (mIAndlinkerRemoteCallback != null) {
+            getLinker().unRegisterObject(mIAndlinkerRemoteCallback);
+        }
         getIRemoteService().unRegisterLiyuHomeListener();
+    }
+
+    @Override
+    public void release() {
+        unRegisterLiyuHomeListener();
+        super.release();
     }
 
     /**

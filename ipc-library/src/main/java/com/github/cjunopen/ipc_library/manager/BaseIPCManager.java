@@ -68,13 +68,17 @@ public abstract class BaseIPCManager<T> {
                 @Override
                 public void onUnBind() {
                     Timber.tag(getTargetAction()).e("onUnBind");
-                    mIRemoteService = null;
-                    setOnBindListener(null);
+                    release();
                 }
             });
         }
 
         mLinker.bind();
+    }
+
+    public void release(){
+        mIRemoteService = null;
+        setOnBindListener(null);
     }
 
     public void unBind() {
