@@ -39,6 +39,7 @@ public class IpcApp extends Application {
                 });
             }
         });
+        LiyuHomeIPCManager.getInstance().bind();
 
 //        LiyuHomeIPCManager.getInstance().bind();
 //

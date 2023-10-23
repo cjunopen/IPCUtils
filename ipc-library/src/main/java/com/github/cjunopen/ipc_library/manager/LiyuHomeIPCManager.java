@@ -92,7 +92,6 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
      */
     public void setIKSongForLiyuHome(IKSongForLiyuHome IKSongForLiyuHome) {
         mIKSongForLiyuHome = IKSongForLiyuHome;
-        bind();
     }
 
     @Override
