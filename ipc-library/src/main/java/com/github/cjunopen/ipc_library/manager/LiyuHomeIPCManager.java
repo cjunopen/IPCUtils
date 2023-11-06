@@ -151,6 +151,21 @@ public class LiyuHomeIPCManager extends BaseIPCManager<ILiYuHomeIpcConnect> impl
         return true;
     }
 
+    @Override
+    public boolean syncFYState(String bodyJson) {
+        IpcBaseRequest<String> baseRequest = new IpcBaseRequest<String>()
+                .setCmdId(CmdIdConstant.CMD_SYNC_FY_STATE)
+                .setData(bodyJson);
+
+        String json = request(GsonUtil.toJson(baseRequest));
+        if (TextUtils.isEmpty(json)) {
+            return false;
+        }
+
+        IpcBaseResponse response = getIpcBaseResponse(json);
+        return response.getCode() == 0;
+    }
+
     private IpcBaseResponse getIpcBaseResponse(String json){
         return GsonUtil.fromJson(json, IpcBaseResponse.class);
     }
