@@ -1,7 +1,5 @@
 package com.github.cjunopen.ipc_library.interfaces;
 
-import com.github.cjunopen.ipc_library.ksong.req.WalkLanternReq;
-
 /**
  * @Description: 利瑜桌面提供给K歌的接口
  * @Author: CJ
@@ -14,4 +12,7 @@ public interface ILiyuHomeForKSong {
 
     //启动利瑜桌面
     boolean launchLiyuHome();
+
+    //发送请求到终端，用于同步房态、呼叫态
+    boolean sendReqToTerminalForSyncState(String bodyJson);
 }
